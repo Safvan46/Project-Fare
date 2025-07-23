@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
-import ProjectCard from '../components/projectCard'
+import ProjectCard from '../components/ProjectCard'
 import { allProjectsApi } from '../services/allApis'
 function Projects() {
   const [projectList,setProjectList]=useState([])

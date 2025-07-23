@@ -1,6 +1,6 @@
 import React, { useState, useEffect,useContext } from 'react'
 import AddProject from '../components/AddProject'
-import Profile from '../components/Profile'
+import Profile from '../components/profile'
 import { userProjectApi,deleteProjectApi } from '../services/allApis'
 import { toast } from 'react-toastify'
 import Edit from '../components/Edit'
