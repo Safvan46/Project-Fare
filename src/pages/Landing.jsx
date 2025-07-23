@@ -1,8 +1,34 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import { Link } from 'react-router-dom'
 import ProjectCard from '../components/projectCard'
+import { allProjectsApi } from '../services/allApis'
 
 function Landing() {
+
+    const [logState , setLogState] = useState(false)
+    const [samples,setSamples]=useState([])
+
+    useEffect(()=>{
+        getData()
+        if(sessionStorage.getItem("token")){
+            setLogState(true)
+        }
+        else{
+            setLogState(false)
+        }
+    },[])
+
+    const getData = async () => {
+        const response = await allProjectsApi()
+        console.log(response)
+        if(response.status==200){
+            setSamples(response.data.slice(0,3))
+        }
+        else{
+            console.log(response)
+        }
+    }
+
     return (
         <>
             <div className="container-fluid">
@@ -18,7 +44,13 @@ function Landing() {
 
                         </p>
                         <div className='d-grid'>
-                            <Link className='btn btn-success' to={'/auth'}>Explore Now...</Link>
+                            {
+                                logState ?
+                                <Link to={'/dash'} className='btn btn-success'>Go To Dashboard</Link>
+                                :
+                                <Link className='btn btn-success' to={'/auth'}>Explore Now...</Link>
+                            }
+                            
                         </div>
                     </div>
                     <div className="col-sm-12 col-md-6 p-5">
@@ -28,9 +60,18 @@ function Landing() {
                 <div className='w-100 my-5'>
                     <h3 className='text-center text-success'>Projects you May like...  </h3>
                     <div className="d-flex justify-content-around my-5">
-                        <ProjectCard />
-                        <ProjectCard />
-                        <ProjectCard />
+                        {
+                            samples.length>0?
+                            <>
+                            {samples.map(item =>(
+                                <ProjectCard project={item} />
+                            ))}
+                            </>
+                            :
+                            <h4 className='text-center text-danger'>No Projects Available</h4>
+                        }
+                        
+                        
                     </div>
                     <div className='text-center'>
                         <Link to={'/allproject'}>View More...</Link>
